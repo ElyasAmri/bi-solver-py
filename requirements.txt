@@ -1,4 +1,0 @@
-plotly
-bokeh
-matplotlib
-numpy
