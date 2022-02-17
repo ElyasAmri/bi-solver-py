@@ -1,6 +1,3 @@
-import pprint
-
-
 def grid(rx, ry):
     ret = {}
     for i in range(rx):
@@ -11,8 +8,8 @@ def grid(rx, ry):
 def binary(n, zf = 8):
     return bin(n).zfill(zf).replace('b', '')
 
-def binaryx(n, zf = 8):
-    return bin(n).zfill(zf).replace('b', '')[-3]
+def binaryx(n, zf = 8, i = -1):
+    return bin(n).zfill(zf).replace('b', '')[i]
 
 def listformat(l: list):
     return str(l).strip('[]').replace("'", '').replace(',', '')
