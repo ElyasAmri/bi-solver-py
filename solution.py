@@ -4,8 +4,6 @@ from grid import Grid
 
 def table_sum(w, h):
     g = Grid(w, h)
-    # g.print()
-    # g.print_bin()
 
     mx = ceil(log2(max(w, h)))
     res = 0
@@ -18,17 +16,17 @@ def table_sum(w, h):
         ri = w % d
         rj = h % d
 
-        if dvi % 2 == 0 or dvj % 2 == 0:
-            squares = dvi * dvj / 2
-        else:
-            squares = (dvi * dvj - 1) / 2
+        dvim2 = dvi % 2
+        dvjm2 = dvj % 2
 
-        if dvi % 2 == 1 and dvj % 2 == 1:
-            remainders = ((dvi + 1) * rj + (dvj + 1) * ri) / 2 * d
+        squares = dvi * dvj / 2
+        if dvim2 == dvjm2 == 1:
+            squares -= 0.5 # squares = (dvi * dvj - 1) / 2
+            remainders = ((dvi + 1) * rj + (dvj + 1) * ri) / 2 * d   
         else:
-            remainders = ((dvi - dvi % 2) * rj + (dvj - dvj % 2) * ri) / 2 * d
+            remainders = ((dvi - dvim2) * rj + (dvj - dvjm2) * ri) / 2 * d
 
-        if not dvi % 2 == dvj % 2:
+        if not dvim2 == dvjm2:
             remainders += ri * rj
 
         c = squares * d * d + remainders
@@ -38,16 +36,11 @@ def table_sum(w, h):
         print()
         res += val
 
-    print(g.sum())
-    print(res)
 
-
-def main():
-    w = 16
-    h = 16
-
-    table_sum(w, h)
+    s = g.sum()
+    ir = int(res)
+    print(f'{s} == {ir} : {s == ir}')
 
 
 if __name__ == '__main__':
-    main()
+    table_sum(13, 7)
