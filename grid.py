@@ -2,10 +2,16 @@ from bits import listformat, binary, binaryx
 
 
 class Grid:
-    def __init__(self, w, h):
+    def __init__(self, w, h, L):
         self.w = w
         self.h = h
-        self.data = {(i, j): i ^ j for i in range(0, h) for j in range(0, w)}
+        self.L = L
+        
+        if not L == 0:
+            self.data = {(i, j): max((i ^ j) - L, 0) for i in range(0, h) for j in range(0, w)}
+            self.raw = Grid(w, h, 0)
+        else:
+            self.data = {(i, j): i ^ j for i in range(0, h) for j in range(0, w)}
 
     def print(self):
         print(f'0         {listformat([j for j in range(0, self.w)])}')

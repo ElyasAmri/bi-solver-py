@@ -2,11 +2,15 @@ from math import *
 from grid import Grid
 
 
-def table_sum(w, h):
-    g = Grid(w, h)
+def table_sum(w, h, L):
+    g = Grid(w, h, L)
+    g.print_bin()
 
     mx = ceil(log2(max(w, h)))
     res = 0
+    ignore_digits = [False if i == '0' else True for i in bin(L).zfill(mx+2).replace('0b', '')]
+    ignore_digits.reverse()
+
     for i in range(0, mx):
         g.print_bin_digit(i+1)
 
@@ -22,7 +26,7 @@ def table_sum(w, h):
         squares = dvi * dvj / 2
         if dvim2 == dvjm2 == 1:
             squares -= 0.5 # squares = (dvi * dvj - 1) / 2
-            remainders = ((dvi + 1) * rj + (dvj + 1) * ri) / 2 * d   
+            remainders = ((dvi + 1) * rj + (dvj + 1) * ri) / 2 * d
         else:
             remainders = ((dvi - dvim2) * rj + (dvj - dvjm2) * ri) / 2 * d
 
@@ -36,11 +40,11 @@ def table_sum(w, h):
         print()
         res += val
 
-
     s = g.sum()
+    sr = g.raw.sum()
     ir = int(res)
-    print(f'{s} == {ir} : {s == ir}')
+    print(f'{s} == {ir}, {sr} == {ir}')
 
 
 if __name__ == '__main__':
-    table_sum(13, 7)
+    table_sum(13, 7, 1)
