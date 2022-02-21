@@ -25,7 +25,7 @@ def table_sum(w, h, L):
 
         squares = dvi * dvj / 2
         if dvim2 == dvjm2 == 1:
-            squares -= 0.5 # squares = (dvi * dvj - 1) / 2
+            squares -= 0.5  # squares = (dvi * dvj - 1) / 2
             remainders = ((dvi + 1) * rj + (dvj + 1) * ri) / 2 * d
         else:
             remainders = ((dvi - dvim2) * rj + (dvj - dvjm2) * ri) / 2 * d
@@ -36,8 +36,7 @@ def table_sum(w, h, L):
         c = squares * d * d + remainders
         val = c * d
         print(f'd: {d}, count: {c}, dvi: {dvi}, ri: {ri}, dvj: {dvj}, rj: {rj} val:{val}')
-        print(f'      squares: {squares}, remainders: {remainders}')
-        print()
+        print(f'      squares: {squares}, remainders: {remainders}\n')
         res += val
 
     s = g.sum()
@@ -47,4 +46,7 @@ def table_sum(w, h, L):
 
 
 if __name__ == '__main__':
-    table_sum(13, 7, 1)
+    # table_sum(13, 7, 1)
+    Grid(5, 3, 1).print_frames()
+
+
