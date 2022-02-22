@@ -4,15 +4,19 @@ from grid import Grid
 
 def table_sum(w, h, L):
     g = Grid(w, h, L)
-    g.print_bin()
+    # g.print_bin()
 
     mx = ceil(log2(max(w, h)))
     res = 0
-    ignore_digits = [False if i == '0' else True for i in bin(L).zfill(mx+2).replace('0b', '')]
+    ignore_digits = [False if i == '0' else True for i in bin(L).zfill(mx + 2).replace('0b', '')]
     ignore_digits.reverse()
 
+    g.print_frames()
+
     for i in range(0, mx):
-        g.print_bin_digit(i+1)
+        g.print_bin_digit(i + 1)
+        # if ignore_digits[i]:
+        #     continue
 
         d = 2 ** i
         dvi = floor(w / d)
@@ -39,6 +43,11 @@ def table_sum(w, h, L):
         print(f'      squares: {squares}, remainders: {remainders}\n')
         res += val
 
+        for s in range(0, i+1):
+            if ignore_digits[s]:
+                pieces = squares * d * d
+                res -= pieces * (2 ** s) / d
+
     s = g.sum()
     sr = g.raw.sum()
     ir = int(res)
@@ -46,7 +55,5 @@ def table_sum(w, h, L):
 
 
 if __name__ == '__main__':
-    # table_sum(13, 7, 1)
-    Grid(5, 3, 1).print_frames()
-
-
+    table_sum(4, 4, 2)
+    # Grid(13, 15, 2).print_frames()

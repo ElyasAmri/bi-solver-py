@@ -32,34 +32,41 @@ class Grid:
 
     def print_bin_digit(self, digit):
         for i in range(0, self.h):
-            l = [binary_digit(self.data[(i, j)], 8, -digit) for j in range(0, self.w)]
+            l = [binary_digit(self.data[(i, j)], 8, digit) for j in range(0, self.w)]
             print(f'{binary(i)}         {list_format(l)}')
         print()
 
-    def print_frames(self):
-        subtract_digits = [int(i) for i in binary(self.L, 8)]
-        last_s = None
+    def print_frames(self, frame=None):
+        subtract_digits = list(
+            filter(lambda x: not x == 0, [binary_digit_value(self.L, self.mx, i) for i in
+                                          range(1, ceil(log2(self.L)) + 2)]))
+        subtracters = {d: [[0 for _ in range(0, self.w)] for _ in range(0, self.h)] for d in subtract_digits}
+        last_d = None
         for d in range(1, self.mx):
+            if frame is not None and not d == frame:
+                continue
+            d2 = 2 ** (d - 1)
             new_s = False
             for i in range(0, self.h):
-                lp = [binary_digit(self.raw.data[(i, j)], self.mx, -d) for j in range(0, self.w)]
-                la = [binary_digit(self.data[(i, j)], self.mx, -d) for j in range(0, self.w)]
+                lp = [binary_digit(self.raw.data[(i, j)], self.mx, d) for j in range(0, self.w)]
 
-                if d in subtract_digits:
+                if d2 in subtract_digits:
+                    last_d = d2
                     if not new_s:
                         print('\n--------------------\n')
-                        last_s = [[0 for _ in range(0, self.w)] for _ in range(0, self.h)]
                         new_s = True
-
+                    last_s = subtracters[d2]
                     lpr = [0 if i == 1 else 1 for i in lp]
                     last_s[i] = list_add_list(last_s[i], lpr)
                     ld = [0 for _ in lp]
-                    print(combine_lists('    ', lp, la, ld, lpr))
+                    print(combine_lists('    ', lp, ld, lpr))
                 else:
                     new_s = False
-                    lp_s = list_sub_list_bitwise(lp, last_s[i])
-                    last_s[i] = list_sub_list_bitwise_rev(last_s[i], lp)
-                    print(combine_lists('    ', lp, la, lp_s, last_s[i]))
+                    if last_d is None:
+                        continue
+                    lp_s = list_sub_list_bitwise(lp, subtracters[last_d][i])
+                    subtracters[last_d][i] = list_sub_list_bitwise_rev(subtracters[last_d][i], lp)
+                    print(combine_lists('    ', lp, lp_s, subtracters[last_d][i]))
             print()
 
     def sum(self):
