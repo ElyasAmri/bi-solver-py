@@ -1,35 +1,29 @@
-from math import *
+from math import ceil
 from grid import Grid
-from funcs import binary_digit_value
+from funcs import binary_digit_value, limit2, div_rem
 
 
 def table_sum(w, h, L):
     g = Grid(w, h, L)
-    # g.print_bin()
+    g.print_f()
+    g.print()
 
     # max bits to split the function (into bit-frames)
-    mx = floor(log2(max(w, h))) + 1
-    lx = floor(log2(L)) + 1
+    mx = limit2(max(w, h))
+    lx = limit2(L)
     res = 0
 
     subtract_digits = [binary_digit_value(L, mx, i) for i in range(1, lx + 1)]
     subtract_digits = list(filter(lambda x: not x == 0, subtract_digits))
 
-    print(subtract_digits)
-
-    g.print_frames()
-
     for i in range(0, mx):
-        g.print_bin_digit(i + 1)
-        # if subtract_digits[i]:
-        #     continue
-
         d = 2 ** i
 
-        dvi = floor(w / d)
-        dvj = floor(h / d)
-        ri = w % d
-        rj = h % d
+        if d in subtract_digits:
+            continue
+
+        dvi, ri = div_rem(w, d)
+        dvj, rj = div_rem(h, d)
 
         dvim2 = dvi % 2
         dvjm2 = dvj % 2
@@ -45,16 +39,14 @@ def table_sum(w, h, L):
         if not dvim2 == dvjm2:
             remainders += ri * rj
 
+        # all cells
         c = squares * d * d + remainders
-        val = c * d
-        print(f'd: {d}, count: {c}, dvi: {dvi}, ri: {ri}, dvj: {dvj}, rj: {rj} val:{val}')
-        print(f'      squares: {squares}, remainders: {remainders}\n')
 
-        if d in subtract_digits:
-            continue
+        # all cells valued d
+        val = c * d
 
         for s in subtract_digits:
-            deviation = squares * d + (ri * (dvj - dvjm2) + rj * (dvi - dvim2)) / 2
+            deviation = squares * d + (ri * ceil(dvj / 2) + rj * ceil(dvi / 2))
             if s <= d:
                 val -= deviation * s
             # else:
@@ -70,7 +62,14 @@ def table_sum(w, h, L):
 
 
 if __name__ == '__main__':
-    table_sum(2, 3, 1)
+    table_sum(1, 2, 1)
+
+    # for i in range(1, 10):
+    #     for j in range(1, 10):
+    #         if not table_sum(i, j, 1):
+    #             print(f'failed, {i}, {j}')
+    #             exit(-1)
+
     # g = Grid(11, 9, 1)
     # g.print()
     # for i in range(1, g.mx):
