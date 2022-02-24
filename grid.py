@@ -1,5 +1,4 @@
 from math import *
-
 from funcs import *
 
 
@@ -37,14 +36,15 @@ class Grid:
         print()
 
     def print_frames(self, frame=None):
+        """
+
         subtract_digits = list(
             filter(lambda x: not x == 0, [binary_digit_value(self.L, self.mx, i) for i in
                                           range(1, ceil(log2(self.L)) + 2)]))
         subtracters = {d: [[0 for _ in range(0, self.w)] for _ in range(0, self.h)] for d in subtract_digits}
         last_d = None
-        for d in range(1, self.mx):
-            if frame is not None and not d == frame:
-                continue
+
+        def func(d, self):
             d2 = 2 ** (d - 1)
             new_s = False
             for i in range(0, self.h):
@@ -67,6 +67,51 @@ class Grid:
                     lp_s = list_sub_list_bitwise(lp, subtracters[last_d][i])
                     subtracters[last_d][i] = list_sub_list_bitwise_rev(subtracters[last_d][i], lp)
                     print(combine_lists('    ', lp, lp_s, subtracters[last_d][i]))
+            print()
+
+        if frame is not None:
+            func(frame, self)
+            return
+
+        for i in range(1, self.mx):
+            func(i, self)
+
+        """
+
+    def print_f(self, display_bit=False):
+        subtract_digits = list(filter(
+            lambda x: not x == 0,
+            [binary_digit_value(self.L, self.mx, i)
+             for i in range(1, ceil(log2(self.L)) + 2)]
+        ))
+
+        subtracts = {
+            d: [[d for _ in range(0, self.w)] for _ in range(0, self.h)]
+            for d in subtract_digits
+        }
+
+        last_subtract = None
+
+        # every frame
+        for d in range(1, self.mx):
+            # d squared
+            d2 = 2 ** (d - 1)
+            if not display_bit:
+                print(d2)
+
+            show_option = d2 if display_bit else 1
+
+            # every row
+            for i in range(0, self.h):
+                frame_previous = [binary_digit(self.raw.data[(i, j)], self.mx, d) * show_option for j in range(0, self.w)]
+                frame_current = [binary_digit(self.data[(i, j)], self.mx, d) * show_option for j in range(0, self.w)]
+
+                if d2 in subtract_digits:
+                    print(combine_lists('    ', frame_previous, frame_current))
+                else:
+                    print(combine_lists('    ', frame_previous, frame_current))
+                    if last_subtract is None:
+                        continue
             print()
 
     def sum(self):
