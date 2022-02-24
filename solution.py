@@ -1,8 +1,8 @@
 from grid import Grid
 from funcs import binary_digit_value, limit2
 
+
 def table_sum_noprint(w, h, L):
-    g = Grid(w, h, L)
     mx = limit2(max(w, h))
     lx = 0 if L == 0 else limit2(L)
     res = 0
@@ -51,9 +51,8 @@ def table_sum_noprint(w, h, L):
 
         res += val
 
-    s = g.sum()
-    ir = int(res)
-    return s == ir
+    return int(res)
+
 
 def table_sum(w, h, L):
     g = Grid(w, h, L)
