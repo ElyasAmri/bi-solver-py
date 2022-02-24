@@ -53,7 +53,3 @@ def multiply_list(l: list, multiplier):
 
 def limit2(x):
     return floor(log2(x)) + 1
-
-
-def div_rem(x, div):
-    return floor(x / div), x % div
