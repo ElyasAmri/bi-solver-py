@@ -108,8 +108,8 @@ def table_sum(w, h, L):
                 deviation += min(ri, rj)
             if s <= d:
                 val -= deviation * s
-            # else:
-            #     val += deviation
+            else:
+                val += deviation
 
         res += val
 
@@ -121,13 +121,14 @@ def table_sum(w, h, L):
 
 
 if __name__ == '__main__':
-    table_sum(1, 2, 1)
+    table_sum(1, 2, 2)
 
-    for i in range(1, 10):
-        for j in range(1, 10):
-            if not table_sum(i, j, 1):
-                print(f'failed, {i}, {j}')
-                exit(-1)
+    # for i in range(1, 10):
+    #     for j in range(1, 10):
+    #         for l in range(0, 10):
+    #             if not table_sum_noprint(i, j, l) == Grid(i, j, l).sum():
+    #                 print(f'failed, {i}, {j}, {l}')
+    #                 exit(-1)
 
     # g = Grid(11, 9, 1)
     # g.print()
