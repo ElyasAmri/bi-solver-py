@@ -1,3 +1,5 @@
+const pos = x => x > 0 ? x : 0
+
 class Grid {
   constructor(w, h, l = 0, t = false) {
     this.w = w
@@ -14,7 +16,7 @@ class Grid {
     for (let i = 0; i < this.w; i++) {
       const row = []
       for (let j = 0; j < this.h; j++) {
-        row.push((i ^ j) - this.l)
+        row.push(pos((i ^ j) - this.l))
       }
       this.data.push(row)
     }

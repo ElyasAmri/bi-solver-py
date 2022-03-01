@@ -13,7 +13,7 @@ function Controls() {
   const {width, height, subtract, useSubtract, modulus, useModulus} = useSelector(state => state.table)
 
   return (
-    <div className="flex flex-row mt-4 border border-black rounded-md max-w-max px-6 py-2">
+    <div className="flex flex-row mt-4 border border-black rounded-md max-w-max px-6 py-2 bg-blue-400">
       <div className="flex flex-col space-y-2">
         <label className="h-6" htmlFor="width">Width</label>
         <label className="h-6" htmlFor="height">Height</label>
