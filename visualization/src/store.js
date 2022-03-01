@@ -27,7 +27,7 @@ const tableSlice = createSlice({
       state.useModulus = action.payload
     },
     changeModulus: (state, action) => {
-      state.height = action.payload
+      state.modulus = action.payload
     }
   }
 })
