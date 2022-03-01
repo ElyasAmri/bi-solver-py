@@ -1,12 +1,16 @@
-import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  changeSubtract,
+  changeUseSubtract,
+  changeUseModulus,
+  changeHeight,
+  changeModulus,
+  changeWidth,
+} from "../store";
 
 function Controls() {
-  const [width, setWidth] = useState(10)
-  const [height, setHeight] = useState(10)
-  const [subtract, setSubtract] = useState(0)
-  const [useSubtract, setUseSubtract] = useState(false)
-  const [modulus, setModulus] = useState(0)
-  const [useModulus, setUseModulus] = useState(false)
+  const dispatch = useDispatch()
+  const {width, height, subtract, useSubtract, modulus, useModulus} = useSelector(state => state.table)
 
   return (
     <div className="flex flex-row mt-4 border border-black rounded-md max-w-max px-6 py-2">
@@ -24,17 +28,21 @@ function Controls() {
       </div>
 
       <div className="ml-4 flex flex-col space-y-2">
-        <input className="h-6" id="width" type="number" value={width} onChange={e => setWidth(e.target.value)}/>
-        <input className="h-6" id="height" type="number" value={height} onChange={e => setHeight(e.target.value)}/>
+        <input className="h-6" id="width" type="number" value={width}
+               onChange={e => dispatch(changeWidth(e.target.value))}/>
+        <input className="h-6" id="height" type="number" value={height}
+               onChange={e => dispatch(changeHeight(e.target.value))}/>
         <input className="h-6" id="use-subtract" type="checkbox" checked={useSubtract}
-               onClick={() => setUseSubtract(!useSubtract)}/>
+               onChange={() => dispatch(changeUseSubtract(!useSubtract))}/>
         {useSubtract &&
-          <input className="h-6" id="subtract" type="number" value={subtract} onChange={e => setSubtract(e.target.value)}/>
+          <input className="h-6" id="subtract" type="number" value={subtract}
+                 onChange={e => dispatch(changeSubtract(e.target.value))}/>
         }
         <input className="h-6" id="use-modulus" type="checkbox" checked={useModulus}
-               onClick={() => setUseModulus(!useModulus)}/>
+               onChange={() => dispatch(changeUseModulus(!useModulus))}/>
         {useModulus &&
-          <input className="h-6" id="modulus" type="number" value={modulus} onChange={e => setModulus(e.target.value)}/>
+          <input className="h-6" id="modulus" type="number" value={modulus}
+                 onChange={e => dispatch(changeModulus(e.target.value))}/>
         }
       </div>
     </div>
