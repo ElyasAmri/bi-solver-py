@@ -15,6 +15,8 @@ class Grid:
             self.raw = Grid(w, h, 0)
         else:
             self.data = {(i, j): i ^ j for i in range(0, h) for j in range(0, w)}
+            self.subtract_digits = []
+            self.raw = self
             return
 
         self.subtract_digits = list(filter(
