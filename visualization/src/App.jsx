@@ -23,24 +23,29 @@ function App() {
       <div className="max-w-sm md:max-w-3xl mx-auto xl:max-w-6xl xl:mx-2">
         <ul className="w-full h-10 flex flex-row justify-evenly text-white font-bold">
           <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('table')}>Table</li>
-          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('frame-raw')}>Frames - Raw</li>
-          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('frame-real')}>Frames - Real</li>
+          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('frame')}>Frames</li>
           <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('sub')}>Subtraction Forms</li>
         </ul>
         <hr className="mb-4"/>
         {tab === 'table' &&
           <Table data={grid.data}/>
         }
-        {tab === 'frame-raw' &&
-          <div className="space-y-2">
-            {rawFrames.map((e, i) => <Table key={i}
-                                         data={useBinary ? e.binData : e.data}/>)}
-          </div>
-        }
-        {tab === 'frame-real' &&
-          <div className="space-y-2">
-            {frames.map((e, i) => <Table key={i}
-                                         data={useBinary ? e.binData : e.data}/>)}
+        {tab === 'frame' &&
+          <div className="flex flex-row justify-evenly">
+            <div>
+              <p className="text-center mb-4">Raw</p>
+              <div className="space-y-2">
+                {rawFrames.map((e, i) => <Table key={i}
+                                                data={useBinary ? e.binData : e.data}/>)}
+              </div>
+            </div>
+            <div>
+              <p className="text-center mb-4">Real</p>
+              <div className="space-y-2">
+                {frames.map((e, i) => <Table key={i}
+                                             data={useBinary ? e.binData : e.data}/>)}
+              </div>
+            </div>
           </div>
         }
         {tab === 'sub' &&
