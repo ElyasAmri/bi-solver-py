@@ -6,11 +6,12 @@ import {
   changeHeight,
   changeModulus,
   changeWidth,
+  changeUseBinary,
 } from "../store";
 
 function Controls() {
   const dispatch = useDispatch()
-  const {width, height, subtract, useSubtract, modulus, useModulus} = useSelector(state => state.table)
+  const {width, height, subtract, useSubtract, modulus, useModulus, useBinary} = useSelector(state => state.table)
 
   return (
     <div className="flex flex-row mt-4 border border-black rounded-md max-w-max px-6 py-2 bg-blue-400">
@@ -25,6 +26,7 @@ function Controls() {
         {useModulus &&
           <label className="h-6" htmlFor="modulus">Modulus</label>
         }
+        <label className="h-6" htmlFor="use-binary">Use Binary</label>
       </div>
 
       <div className="ml-4 flex flex-col space-y-2">
@@ -44,6 +46,8 @@ function Controls() {
           <input className="h-6" id="modulus" type="number" value={modulus}
                  onChange={e => dispatch(changeModulus(e.target.value))}/>
         }
+        <input className="h-6" id="use-binary" type="checkbox" checked={useBinary}
+               onChange={() => dispatch(changeUseBinary(!useBinary))}/>
       </div>
     </div>
   )

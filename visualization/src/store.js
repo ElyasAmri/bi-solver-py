@@ -9,6 +9,7 @@ const tableSlice = createSlice({
     subtract: 0,
     useModulus: false,
     modulus: 0,
+    useBinary: false,
   },
   reducers: {
     changeWidth: (state, action) => {
@@ -28,6 +29,9 @@ const tableSlice = createSlice({
     },
     changeModulus: (state, action) => {
       state.modulus = action.payload
+    },
+    changeUseBinary: (state, action) => {
+      state.useBinary = action.payload
     }
   }
 })
@@ -46,4 +50,5 @@ export const {
   changeSubtract,
   changeUseModulus,
   changeModulus,
+  changeUseBinary,
 } = tableSlice.actions
