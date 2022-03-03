@@ -8,7 +8,13 @@ import {useState} from "react";
 function App() {
   const {width, height, subtract, modulus, useBinary} = useSelector(state => state.table)
   const grid = new Grid(width, height, subtract, modulus)
+
+  const isGridSimple = subtract === 0 && modulus === 0
+
+  const rawGrid = isGridSimple ? grid : new Grid(width, height, 0, 0)
+
   const frames = grid.getFrames()
+  const rawFrames = isGridSimple ? frames : rawGrid.getFrames()
 
   const [tab, setTab] = useState('table')
 
@@ -27,7 +33,7 @@ function App() {
         }
         {tab === 'frame-raw' &&
           <div className="space-y-2">
-            {frames.map((e, i) => <Table key={i}
+            {rawFrames.map((e, i) => <Table key={i}
                                          data={useBinary ? e.binData : e.data}/>)}
           </div>
         }
