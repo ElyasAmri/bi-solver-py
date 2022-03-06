@@ -2,16 +2,17 @@ import _ from 'lodash'
 
 class SubtractionCounter {
   constructor({w, h, l, mx}) {
-    this.l = l
+    this.w = w
+    this.h = h
     this.mx = mx
-    this.counter = []
+    this.counter = {}
 
-    const binL = (parseInt(l)).toString(2).padStart(mx, '0')
     for (let i = 0; i < mx; i++) {
-      if (binL[i] === '0')
-        continue
-
       const val = mx - i - 1
+      const bv = Math.pow(2, val)
+      // noinspection JSBitwiseOperatorUsage
+      if (!(bv & l))
+        continue
 
       this.counter[val] = Array(w)
         .fill(0)
@@ -22,18 +23,20 @@ class SubtractionCounter {
     }
   }
 
-  subtractFrame(frame, w, h) {
+  subtractFrame(frame) {
     const frameCopy = _.cloneDeep(frame)
     const {data} = frameCopy
-    const {counter} = this;
-    for (const ce in counter) {
+    const {counter, w, h} = this;
+    for (let f in counter) {
+      f = parseInt(f)
       for (let i = 0; i < w; i++) {
         for (let j = 0; j < h; j++) {
           let item = data[i][j]
 
-          if (item === 0) continue
-          let subtract = counter[ce][i][j]
+          if (item === 0)
+            continue
 
+          let subtract = counter[f][i][j]
           if (subtract <= item) {
             const tempItem = item
             item -= subtract
@@ -43,14 +46,44 @@ class SubtractionCounter {
             item = 0
           }
           data[i][j] = item
-          counter[ce][i][j] = subtract
+          counter[f][i][j] = subtract
         }
       }
     }
 
-    return {
-      action: frameCopy,
+    return frameCopy
+  }
+
+  counterFrames() {
+    const {counter, w, h} = this
+    const newCounter = []
+
+    for (const f in counter) {
+      const newCounterFrame = []
+      const bv = Math.pow(2, f)
+      for (let i = 0; i < w; i++) {
+        const newCounterFrameRow = []
+        for (let j = 0; j < h; j++) {
+          const item = counter[f][i][j]
+          if (item === bv || item === 0) {
+            newCounterFrameRow.push(item)
+            continue
+          }
+          newCounterFrameRow.push(0)
+          for (const k in counter) {
+            if (k < f)
+              break
+            const sbv = Math.pow(2, k)
+            // noinspection JSBitwiseOperatorUsage
+            if (sbv & item)
+              newCounter[k][i][j] = sbv
+          }
+        }
+        newCounterFrame.push(newCounterFrameRow)
+      }
+      newCounter.push(newCounterFrame)
     }
+    return newCounter
   }
 }
 

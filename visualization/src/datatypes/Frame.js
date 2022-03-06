@@ -1,10 +1,8 @@
 class Frame {
   constructor(bit, grid) {
-    const bitValue = this.bitValue = Math.pow(2, bit)
-    this.grid = grid
+    const bitValue = Math.pow(2, bit)
     this.data = []
     this.binData = []
-    this.bit = bit
 
     for (let i = 0; i < grid.w; i++) {
       const row = []

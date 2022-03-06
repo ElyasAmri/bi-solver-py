@@ -1,13 +1,15 @@
+import {useState} from "react";
+import {useSelector} from "react-redux";
 import Table from "./components/Table";
 import Controls from "./components/Controls";
 import Grid from './datatypes/Grid'
-import {useSelector} from "react-redux";
-import {useState} from "react";
 import SubtractionCounter from "./datatypes/SubtractionCounter";
 
 // noinspection JSUnusedGlobalSymbols
 function App() {
   const {width, height, subtract, modulus, useBinary} = useSelector(state => state.table)
+  const [tab, setTab] = useState('table')
+
   const grid = new Grid(width, height, subtract, modulus)
 
   const isGridSimple = subtract === 0 && modulus === 0
@@ -18,18 +20,17 @@ function App() {
   const rawFrames = isGridSimple ? frames : rawGrid.getFrames()
 
   const counter = new SubtractionCounter(grid)
-  const subtraction = rawFrames.map(e => counter.subtractFrame(e, width, height))
-  const action = subtraction.map(e => e.action)
+  const subtraction = rawFrames.map(e => counter.subtractFrame(e))
 
-  const [tab, setTab] = useState('table')
+  const changeTab = (t) => () => setTab(t)
 
   return (
     <div className="bg-gray-100 min-w-screen min-h-screen pb-72 pt-4">
-      <div className="max-w-sm md:max-w-3xl mx-auto xl:max-w-6xl xl:mx-2">
+      <div className="mx-10">
         <ul className="w-full h-10 flex flex-row justify-evenly text-white font-bold">
-          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('table')}>Table</li>
-          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('frame')}>Frames</li>
-          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={() => setTab('sub')}>Subtraction Forms</li>
+          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={changeTab('table')}>Table</li>
+          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={changeTab('frame')}>Frames</li>
+          <li className="bg-purple-600 rounded-md h-6 px-2" onClick={changeTab('sub')}>Subtraction Forms</li>
         </ul>
         <hr className="mb-4"/>
         {tab === 'table' &&
@@ -63,17 +64,19 @@ function App() {
               </div>
             </div>
             <div>
-              <p className="text-center mb-4">Action</p>
+              <p className="text-center mb-4">Subtraction</p>
               <div className="space-y-2">
-                {action.map((e, i) =>
+                {subtraction.map((e, i) =>
                   <Table key={i} data={e.data}/>)}
               </div>
             </div>
             <div>
               <p className="text-center mb-4">Remainder</p>
               <div className="space-y-2">
-                {counter.counter.map((e, i) =>
-                  <Table key={i} data={e}/>)}
+                <div className="flex flex-row space-x-2">
+                  {counter.counterFrames().map((e, i) =>
+                    <Table key={i} data={e}/>)}
+                </div>
               </div>
             </div>
           </div>}

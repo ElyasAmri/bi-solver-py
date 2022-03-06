@@ -13,22 +13,22 @@ const tableSlice = createSlice({
   },
   reducers: {
     changeWidth: (state, action) => {
-      state.width = action.payload
+      state.width = parseInt(action.payload)
     },
     changeHeight: (state, action) => {
-      state.height = action.payload
+      state.height = parseInt(action.payload)
     },
     changeUseSubtract: (state, action) => {
       state.useSubtract = action.payload
     },
     changeSubtract: (state, action) => {
-      state.subtract = action.payload
+      state.subtract = parseInt(action.payload)
     },
     changeUseModulus: (state, action) => {
       state.useModulus = action.payload
     },
     changeModulus: (state, action) => {
-      state.modulus = action.payload
+      state.modulus = parseInt(action.payload)
     },
     changeUseBinary: (state, action) => {
       state.useBinary = action.payload
