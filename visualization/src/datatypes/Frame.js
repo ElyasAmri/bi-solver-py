@@ -17,7 +17,6 @@ class Frame {
       this.data.push(row)
       this.binData.push(binRow)
     }
-    console.log(this)
   }
 }
 

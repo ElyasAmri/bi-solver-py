@@ -5,8 +5,8 @@ const tableSlice = createSlice({
   initialState: {
     width: 10,
     height: 10,
-    useSubtract: false,
-    subtract: 0,
+    useSubtract: true,
+    subtract: 3,
     useModulus: false,
     modulus: 0,
     useBinary: false,

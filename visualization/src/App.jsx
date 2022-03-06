@@ -3,6 +3,7 @@ import Controls from "./components/Controls";
 import Grid from './datatypes/Grid'
 import {useSelector} from "react-redux";
 import {useState} from "react";
+import SubtractionCounter from "./datatypes/SubtractionCounter";
 
 // noinspection JSUnusedGlobalSymbols
 function App() {
@@ -15,6 +16,10 @@ function App() {
 
   const frames = grid.getFrames()
   const rawFrames = isGridSimple ? frames : rawGrid.getFrames()
+
+  const counter = new SubtractionCounter(grid)
+  const subtraction = rawFrames.map(e => counter.subtractFrame(e, width, height))
+  const action = subtraction.map(e => e.action)
 
   const [tab, setTab] = useState('table')
 
@@ -35,22 +40,43 @@ function App() {
             <div>
               <p className="text-center mb-4">Raw</p>
               <div className="space-y-2">
-                {rawFrames.map((e, i) => <Table key={i}
-                                                data={useBinary ? e.binData : e.data}/>)}
+                {rawFrames.map((e, i) =>
+                  <Table key={i} data={useBinary ? e.binData : e.data}/>)}
               </div>
             </div>
             <div>
               <p className="text-center mb-4">Real</p>
               <div className="space-y-2">
-                {frames.map((e, i) => <Table key={i}
-                                             data={useBinary ? e.binData : e.data}/>)}
+                {frames.map((e, i) =>
+                  <Table key={i} data={useBinary ? e.binData : e.data}/>)}
               </div>
             </div>
           </div>
         }
         {tab === 'sub' &&
-          'subtraction form'
-        }
+          <div className="flex flex-row justify-evenly">
+            <div>
+              <p className="text-center mb-4">Raw</p>
+              <div className="space-y-2">
+                {rawFrames.map((e, i) =>
+                  <Table key={i} data={useBinary ? e.binData : e.data}/>)}
+              </div>
+            </div>
+            <div>
+              <p className="text-center mb-4">Action</p>
+              <div className="space-y-2">
+                {action.map((e, i) =>
+                  <Table key={i} data={e.data}/>)}
+              </div>
+            </div>
+            <div>
+              <p className="text-center mb-4">Remainder</p>
+              <div className="space-y-2">
+                {counter.counter.map((e, i) =>
+                  <Table key={i} data={e}/>)}
+              </div>
+            </div>
+          </div>}
         <div className="fixed bottom-4 left-4">
           <Controls/>
           <p className="px-4">Sum: {grid.sum()}</p>
