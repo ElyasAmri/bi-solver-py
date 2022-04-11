@@ -1,5 +1,8 @@
 function Table({data}) {
 
+  if (!data)
+   return null
+
   return (
     <div className="text-center max-w-min flex flex-row leading-none divide-x-2 divide-gray-300 border-2 border-gray-300">
       {data.map((row, x) =>

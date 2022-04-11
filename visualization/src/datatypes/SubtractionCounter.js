@@ -11,15 +11,10 @@ class SubtractionCounter {
       const val = mx - i - 1
       const bv = Math.pow(2, val)
       // noinspection JSBitwiseOperatorUsage
-      if (!(bv & l))
-        continue
-
+      const fill = bv & l ? Math.pow(2, val) : 0
       this.counter[val] = Array(w)
         .fill(0)
-        .map(() => Array(h)
-          .fill(0)
-          .map(() => Math.pow(2, val))
-        )
+        .map(() => Array(h).fill(fill))
     }
   }
 
