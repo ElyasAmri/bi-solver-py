@@ -15,7 +15,7 @@ const bitRank = (x: BitValue) => {
   return log2(x) as BitRank
 }
 
-const table = (w: number, h: number, v: any) => {
+export const table = (w: number, h: number, v: any) => {
   return Array.from({length: w}, () =>
     Array.from({length: h}, () => v
     ))
