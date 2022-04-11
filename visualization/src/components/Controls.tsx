@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useAppSelector, useAppDispatch} from "../utils/hooks";
 import {
   changeSubtract,
   changeUseSubtract,
@@ -7,11 +7,12 @@ import {
   changeModulus,
   changeWidth,
   changeUseBinary,
-} from "../store";
+} from "../utils/store";
 
 function Controls() {
-  const dispatch = useDispatch()
-  const {width, height, subtract, useSubtract, modulus, useModulus, useBinary} = useSelector(state => state.table)
+  const dispatch = useAppDispatch()
+  const {width, height, subtract, useSubtract, modulus, useModulus, useBinary}
+    = useAppSelector(state => state.table)
 
   return (
     <div className="flex flex-row mt-4 border border-black rounded-md max-w-max px-6 py-2 bg-blue-400">

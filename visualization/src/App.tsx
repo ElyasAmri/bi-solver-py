@@ -1,19 +1,21 @@
 import {useState} from "react";
-import {useSelector} from "react-redux";
 import Table from "./components/Table";
 import Controls from "./components/Controls";
 import Grid from './datatypes/Grid'
 import SubtractionCounter from "./datatypes/SubtractionCounter";
+import {useAppSelector} from "./utils/hooks";
 
-function staticTable(w, h, v) {
-  return Array.from({length: w}, () => 
-         Array.from({length: h}, () => v))
+function staticTable(w: number, h: number, v: number) {
+  return Array.from({length: w}, () =>
+    Array.from({length: h}, () => v))
 }
+
+type Tab = 'table' | 'frame' | 'sub' | 'extra'
 
 // noinspection JSUnusedGlobalSymbols
 function App() {
-  const {width, height, subtract, modulus, useBinary} = useSelector(state => state.table)
-  const [tab, setTab] = useState('table')
+  const {width, height, subtract, modulus, useBinary} = useAppSelector(state => state.table)
+  const [tab, setTab] = useState<Tab>('table')
 
   const grid = new Grid(width, height, subtract, modulus)
 
@@ -24,14 +26,14 @@ function App() {
   const frames = grid.getFrames()
   const rawFrames = isGridSimple ? frames : rawGrid.getFrames()
 
-  const counter = new SubtractionCounter(grid)
+  const counter = SubtractionCounter.createFromGrid(grid)
   const subtraction = rawFrames.map(e => counter.subtractFrame(e))
   // const staticN = staticTable(width, height, subtract)
   const [inputs, setInputs] = useState(staticTable(width, height, 0))
-  
 
-  const changeTab = (t) => () => setTab(t)
-  const setInput = (x, y) => (v) => {
+
+  const changeTab = (t: Tab) => () => setTab(t)
+  const setInput = (x: number, y: number) => (v: number) => {
     const copy = [...inputs]
     copy[x][y] = v
     setInputs(copy)
@@ -108,19 +110,20 @@ function App() {
               </div>
             </div>
           </div>}
-        {tab === 'extra' && 
+        {tab === 'extra' &&
           <div className="flex flex-row justify-evenly">
             <div className="flex flex-row">
-              {inputs && Array.from({length: width}, (_, i) => 
+              {inputs && Array.from({length: width}, (_, i) =>
                 <div key={i} className="flex flex-col justify-evenly">
-                  {Array.from({length: height}, (_, j) => 
-                    <input className="block border w-10" key={j} value={inputs[i][j]} type="number" min={0} onChange={({target}) => setInput(i, j)(parseInt(target.value))}/>
+                  {Array.from({length: height}, (_, j) =>
+                    <input className="block border w-10" key={j} value={inputs[i][j]} type="number"
+                           min={0} onChange={({target}) => setInput(i, j)(parseInt(target.value))}/>
                   )}
-               </div>
-               )}
+                </div>
+              )}
             </div>
             <div>
-            <Table data={inputs}/>
+              <Table data={inputs}/>
             </div>
           </div>}
         <div className="fixed bottom-4 left-4">

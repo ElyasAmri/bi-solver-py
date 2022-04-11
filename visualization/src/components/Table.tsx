@@ -1,4 +1,8 @@
-function Table({data}) {
+type Props = {
+  data: number[][]
+}
+
+function Table({data}: Props) {
 
   if (!data)
    return null

@@ -1,16 +1,16 @@
 import _ from 'lodash'
+import Grid from "./Grid";
+import Frame from "./Frame";
 
 class SubtractionCounter {
-  constructor({w, h, l, mx}) {
-    this.w = w
-    this.h = h
-    this.mx = mx
+  public counter: {[deg: number]: any[]};
+
+  constructor(public w: number, public h: number, public l: number, public mx: number) {
     this.counter = {}
 
     for (let i = 0; i < mx; i++) {
       const val = mx - i - 1
       const bv = Math.pow(2, val)
-      // noinspection JSBitwiseOperatorUsage
       const fill = bv & l ? Math.pow(2, val) : 0
       this.counter[val] = Array(w)
         .fill(0)
@@ -18,12 +18,16 @@ class SubtractionCounter {
     }
   }
 
-  subtractFrame(frame) {
+  static createFromGrid(grid: Grid) {
+    return new SubtractionCounter(grid.w, grid.h, grid.l, grid.mx)
+  }
+
+  subtractFrame(frame: Frame) {
     const frameCopy = _.cloneDeep(frame)
     const {data} = frameCopy
     const {counter, w, h} = this;
-    for (let f in counter) {
-      f = parseInt(f)
+    for (let cf in counter) {
+      let f = parseInt(cf)
       for (let i = 0; i < w; i++) {
         for (let j = 0; j < h; j++) {
           let item = data[i][j]
@@ -53,7 +57,8 @@ class SubtractionCounter {
     const {counter, w, h} = this
     const newCounter = []
 
-    for (const f in counter) {
+    for (const cf in counter) {
+      let f = parseInt(cf)
       const newCounterFrame = []
       const bv = Math.pow(2, f)
       for (let i = 0; i < w; i++) {
@@ -65,7 +70,8 @@ class SubtractionCounter {
             continue
           }
           newCounterFrameRow.push(0)
-          for (const k in counter) {
+          for (const ck in counter) {
+            let k = parseInt(ck)
             if (k < f)
               break
             const sbv = Math.pow(2, k)

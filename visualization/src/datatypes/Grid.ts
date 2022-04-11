@@ -1,14 +1,15 @@
 import Frame from './Frame'
+import {Bit, Table} from "../types";
 
-const pos = x => x > 0 ? x : 0
-const limit2 = x => Math.floor(Math.log2(x)) + 1
+const pos = (x: number) => x > 0 ? x : 0
+const limit2 = (x: number) => Math.floor(Math.log2(x)) + 1
 
 class Grid {
-  constructor(w, h, l = 0, t = 0) {
-    this.w = w
-    this.h = h
-    this.l = l
-    this.t = t
+  public mx: number
+  public data: Table<number>
+  public binaryForm: Table<string>
+
+  constructor(public w: number, public h: number, public l: number = 0, public t: number = 0) {
     this.mx = limit2(Math.max(w, h) - 1) + 1
 
     this.data = []
@@ -44,11 +45,11 @@ class Grid {
 
   toBinary() {
     const ret = []
-    const {data, mx} = this;
+    const {data, mx, w, h} = this;
 
-    for (let i = 0; i < this.w; i++) {
+    for (let i = 0; i < w; i++) {
       const row = []
-      for (let j = 0; j < this.h; j++) {
+      for (let j = 0; j < h; j++) {
 
         row.push(data[i][j].toString(2).padStart(mx, '0'))
       }
